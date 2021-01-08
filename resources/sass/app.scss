@@ -1,8 +1,39 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url("https://fonts.googleapis.com/css?family=Nunito");
 
 // Variables
-@import 'variables';
+@import "variables";
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
+
+.counters {
+    margin-right: 40px;
+    font-size: 13px;
+    text-align: center;
+
+    strong {
+        padding-top: 2px;
+        display: block;
+        font-size: 1.2em;
+    }
+    .status,
+    .view {
+        width: 70px;
+        height: 70px;
+        margin-top: 20px;
+    }
+    .status {
+        &.answered {
+            border: 1px solid $green;
+            color: $green;
+        }
+        &.unasnwerd {
+            border: none;
+        }
+        &.answer-accepted {
+            background-color: $indigo;
+            color: $yellow;
+        }
+    }
+}
