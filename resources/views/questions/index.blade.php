@@ -5,8 +5,14 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">All Questions</div>
-
+                <div class="card-header">All Questions
+                <div class="d-flex justify-content-center"> 
+                 <div class="ml-auto">
+                    <a href="{{route('questions.create')}}" class="btn btn-outline-info">Ask Question</a>
+                </div></div>
+              
+                </div>
+                @include('layouts._message')
                 <div class="card-body">
                     @foreach ($questions as $question)
                     <div class="media">
