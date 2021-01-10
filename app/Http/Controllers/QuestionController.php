@@ -48,7 +48,8 @@ class QuestionController extends Controller
         // $question->user_id = Auth::id();
         // $question->save();
         $request->user()->questions()->create($request->only('title', 'body'));
-        return redirect(route('questions.index'))->with('success','You are send a message successfully !');
+        return redirect(route('questions.index'))
+            ->with('success', 'You are send a message successfully !');
     }
 
     /**
@@ -68,9 +69,9 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Question $question)
     {
-        //
+        return view('questions.edit', compact('question'));
     }
 
     /**
@@ -80,9 +81,10 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AskQuestionRequest $request, Question $question)
     {
-        //
+        $question->update($request->only('title', 'body'));
+        return redirect(route('questions.index'))->with('success', 'Your Question is updated succesfully');
     }
 
     /**
@@ -91,8 +93,9 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Question $question)
     {
-        //
+        $question->delete();
+        return back()->with('success', 'Question was deleted successfully !');
     }
 }
