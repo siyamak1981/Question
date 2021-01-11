@@ -5,11 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Question;
 use Auth;
+use Gate;
 use App\Http\Requests\AskQuestionRequest;
 
 
 class QuestionController extends Controller
 {
+    public function __construct(){
+        return $this->middleware('auth')->except(['index', 'show']);
+    }
+    
+        
+    
     /**
      * Display a listing of the resource.
      *
@@ -58,9 +65,10 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Question $question)
     {
-        //
+        $question->increment('views');
+        return view('questions.show', compact('question'));
     }
 
     /**
@@ -71,6 +79,11 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     {
+        // if(\Gate::denies('update-question',$question)){
+
+        //     return abort(403, 'access denied');
+        // }
+        $this->authorize('update', $question);
         return view('questions.edit', compact('question'));
     }
 
@@ -95,7 +108,12 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
+        // if(\Gate::denies('update_question',$question)){
+        //     return abort(403, 'access denies');
+        // }
+        $this->authorize('delete', $question);
         $question->delete();
         return back()->with('success', 'Question was deleted successfully !');
+        
     }
 }

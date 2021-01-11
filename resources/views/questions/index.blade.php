@@ -32,11 +32,14 @@
                             </div>
                         </div>
                         <div class="media-body">
-                            <div class="d-flex align-items-center"> <a href="{{$question->url }}">
+                            <div class="d-flex align-items-center"> <a href="{{ $question->url }}">
                                     <h3 class="mt-0">{{ $question->title }}</h3>
+                                    @can('update', $question)
                                     <div class="ml-auto">
                                         <a href="{{ route('questions.edit', $question->id)}}"><button class="btn btn-warning">Edit</button></a>
                                     </div>
+                                    @endcan
+                                    @can('delete', $question)
                                     <form id="delete-form-{{ $question->id }}" method="POST" action="{{ route('questions.destroy', $question->id) }}">
                                         @method('DELETE')
                                         @csrf
@@ -47,6 +50,7 @@
                                         event.preventDefault()  }
                                 ">Delete</button>
                                     </form>
+                                    @endcan
                             </div>
 
                             <div class="lead">
