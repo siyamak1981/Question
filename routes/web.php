@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 
 Route::get('/', function () {
     return view('welcome');
@@ -10,5 +8,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('questions','QuestionController')->except('show');
-Route::get('questions/{slug}', 'QuestionController@show')->name('questions.show');
+
+Route::resource('questions', 'QuestionsController')->except('show');
+Route::resource('questions.answers', 'AnswersController')->except(['index', 'create', 'show']);
+Route::get('/questions/{slug}', 'QuestionsController@show')->name('questions.show');

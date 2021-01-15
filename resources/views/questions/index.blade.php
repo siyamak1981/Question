@@ -5,67 +5,57 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">All Questions
-                    <div class="d-flex justify-content-center">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h2>All Questions</h2>
                         <div class="ml-auto">
-                            <a href="{{route('questions.create')}}" class="btn btn-outline-info">Ask Question</a>
+                            <a href="{{ route('questions.create') }}" class="btn btn-outline-secondary">Ask Question</a>
                         </div>
                     </div>
-
+                    
                 </div>
-                @include('layouts._message')
+
                 <div class="card-body">
+                    @include ('layouts._messages')
+
                     @foreach ($questions as $question)
-                    <div class="media">
-                        <div class="d-flex flex-column counters">
-                            <div class="vote">
-                                <strong> {{ $question->votes}}</strong>{{ Str::plural('votes',$question->votes) }}</strong>
-
+                        <div class="media">
+                            <div class="d-flex flex-column counters">
+                                <div class="vote">
+                                    <strong>{{ $question->votes }}</strong> {{ str_plural('vote', $question->votes) }}
+                                </div>                            
+                                <div class="status {{ $question->status }}">
+                                    <strong>{{ $question->answers_count }}</strong> {{ str_plural('answer', $question->answers_count) }}
+                                </div>                            
+                                <div class="view">
+                                    {{ $question->views . " " . str_plural('view', $question->views) }}
+                                </div>                            
                             </div>
-                            <div class="status {{ $question->status }}">
-                                <strong> {{ $question->answers_count." ".Str::plural('answer', $question->answers_count)}}</strong>
-
-                            </div>
-                            <div class="view">
-                                <strong> {{ $question->views }}</strong> {{ Str::plural('view',$question->views)}}</strong>
-
-                            </div>
-                        </div>
-                        <div class="media-body">
-                            <div class="d-flex align-items-center"> <a href="{{ $question->url }}">
-                                    <h3 class="mt-0">{{ $question->title }}</h3>
-                                    @can('update', $question)
+                            <div class="media-body">
+                                <div class="d-flex align-items-center">
+                                    <h3 class="mt-0"><a href="{{ $question->url }}">{{ $question->title }}</a></h3>
                                     <div class="ml-auto">
-                                        <a href="{{ route('questions.edit', $question->id)}}"><button class="btn btn-warning">Edit</button></a>
+                                        @can ('update', $question)
+                                            <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-sm btn-outline-info">Edit</a>
+                                        @endcan
+                                        @can ('delete', $question)
+                                            <form class="form-delete" method="post" action="{{ route('questions.destroy', $question->id) }}">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                            </form>
+                                        @endcan
                                     </div>
-                                    @endcan
-                                    @can('delete', $question)
-                                    <form id="delete-form-{{ $question->id }}" method="POST" action="{{ route('questions.destroy', $question->id) }}">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button class="btn btn-danger" onclick="if(confirm('Are u sure to delete it?')){
-                                    event.preventDefault()
-                                    document.getElementById('delete-form-{{ $question->id}}').submit()
-                                    }else{
-                                        event.preventDefault()  }
-                                ">Delete</button>
-                                    </form>
-                                    @endcan
-                            </div>
-
-                            <div class="lead">
-                                <a href="{{ $question->user->url }}">
-                                    <span class="badge badge-danger">
-                                        {{$question->user->name}}
-                                    </span>
-                                </a>
-                                <small>{{$question->created_date}}</small>
-                            </div>
-                            </a>
-                            {{ Str::limit($question->body, 250) }}
+                                </div>
+                                <p class="lead">
+                                    Asked by 
+                                    <a href="{{ $question->user->url }}">{{ $question->user->name }}</a> 
+                                    <small class="text-muted">{{ $question->created_date }}</small>
+                                </p>
+                                {{ str_limit($question->body, 250) }}
+                            </div>                        
                         </div>
-                    </div>
-                    <hr>
+                        <hr>
                     @endforeach
 
                     <div class="mx-auto">

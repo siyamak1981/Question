@@ -5,30 +5,20 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header bg-primary">All Questions
-                    <div class="d-flex justify-content-center">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h2>Ask Question</h2>
                         <div class="ml-auto">
-                            <a href="{{route('questions.index')}}" class="btn btn-outline-warning">Back To Question</a>
+                            <a href="{{ route('questions.index') }}" class="btn btn-outline-secondary">Back to all Questions</a>
                         </div>
                     </div>
-
+                    
                 </div>
+
                 <div class="card-body">
-                    @error('title')
-                    <div class="alert alert-danger">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                    @error('body')
-                    <div class="alert alert-danger">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                    <form action="{{route('questions.store')}}" method="POST">
-                    @include('questions._form',['buttonText' => 'Ask question'])
-                    </form>
-
-
+                   <form action="{{ route('questions.store') }}" method="post">
+                        @include ("questions._form", ['buttonText' => "Ask Question"])
+                   </form>
                 </div>
             </div>
         </div>

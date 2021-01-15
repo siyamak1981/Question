@@ -5,31 +5,21 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header bg-primary">Edit Questions
-                    <div class="d-flex justify-content-center">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h2>Edit Question</h2>
                         <div class="ml-auto">
-                            <a href="{{route('questions.index')}}" class="btn btn-outline-warning">Back To Question</a>
+                            <a href="{{ route('questions.index') }}" class="btn btn-outline-secondary">Back to all Questions</a>
                         </div>
                     </div>
-
+                    
                 </div>
+
                 <div class="card-body">
-                    @error('title')
-                    <div class="alert alert-danger">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                    @error('body')
-                    <div class="alert alert-danger">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                    <form action="{{route('questions.update', $question->id)}}" method="POST">
-                    @method('PUT')
-                    @include('questions._form',['buttonText' => 'Update question'])
-                    </form>
-
-
+                   <form action="{{ route('questions.update', $question->id) }}" method="post">
+                        {{ method_field('PUT') }}
+                        @include ("questions._form", ['buttonText' => "Update Question"])
+                   </form>
                 </div>
             </div>
         </div>
