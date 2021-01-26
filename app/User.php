@@ -30,8 +30,8 @@ class User extends Authenticatable
     public function questions()
     {
         return $this->hasMany(Question::class);
-    }  
-    
+    }
+
     public function getUrlAttribute()
     {
         // return route("questions.show", $this->id);
@@ -45,13 +45,23 @@ class User extends Authenticatable
 
     public function getAvatarAttribute()
     {
-        $email = $this->email;        
+        $email = $this->email;
         $size = 32;
 
-        return "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=" . $size;
+        return "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s=" . $size;
     }
 
-    public function favorites(){
-        return $this->belongsToMany(Question::class, 'favorites');
+    public function favorites()
+    {
+        return $this->belongsToMany(Question::class, 'favorites')->withTimestamps();
+    }
+
+    public function voteQuestions()
+    {
+        return $this->morphedByMany(Question::class, 'votable');
+    }
+    public function voteAnswers()
+    {
+        return $this->morphedByMany(Answer::class, 'votable');
     }
 }
